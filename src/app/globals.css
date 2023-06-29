@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+.bg-primary {
+  @apply font-bold text-white bg-[#105367];
+}
+
+.bg-secondrary {
+  @apply bg-[#11647a];
+}
