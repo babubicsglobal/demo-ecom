@@ -18,7 +18,7 @@ function Header() {
 
   useEffect(() => {
     getMainMenu();
-  }, [getMainMenu]);
+  }, []);
 
   return (
     <header className="bg-primary">
