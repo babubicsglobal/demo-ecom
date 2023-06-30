@@ -2,15 +2,18 @@
 import React from "react";
 import { client } from "@/lib/contentful/client";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import UtilityMenu from "../TopHeader";
 
 function Header() {
+  const [mainMenuList, setMainMenuList] = useState([]);
+
   const getMainMenu = async () => {
     try {
       const response = await client.getEntries({ content_type: "mainMenu" });
       const responseData = response.items[0].fields.menu;
-      console.log("utilityMenu", responseData);
+      setMainMenuList(responseData);
+      console.log("mainMenu", responseData);
     } catch (error) {
       console.log(error);
     }
@@ -18,13 +21,13 @@ function Header() {
 
   useEffect(() => {
     getMainMenu();
-  }, [getMainMenu]);
+  }, []);
 
   return (
     <header className="bg-primary">
       <UtilityMenu></UtilityMenu>
       <nav
-        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 px-4"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
@@ -32,7 +35,7 @@ function Header() {
             <span className="sr-only">Your Company</span>
             <img
               className="h-8 w-auto"
-              src="https://c.dev.academyplus-service.de/sites/germany/files/2022-11/Academy%2B%20Logo_0_0.png"
+              src="https://www.listerine.com/sites/listerine_us_2/themes/listerine_bootstrap_us/logo.png"
               alt=""
             />
           </a>
@@ -60,7 +63,7 @@ function Header() {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
-          <div className="relative">
+          {/* <div className="relative">
             <button
               type="button"
               className="flex items-center gap-x-1 text-sm font-semibold leading-6 text-gray-900"
@@ -80,23 +83,22 @@ function Header() {
                 />
               </svg>
             </button>
-          </div>
-
-          <Link
-            href="/posts"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Posts
-          </Link>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Marketplace
-          </a>
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
-            Company
-          </a>
+          </div> */}
+          {mainMenuList.map((item, index) => (
+            <Link
+              key={index}
+              href={item.fields.link}
+              className="text-sm font-semibold leading-6 text-white text-sm"
+            >
+              {item.fields.title}
+            </Link>
+          ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm font-semibold leading-6 text-gray-900">
+          <a
+            href="#"
+            className="text-sm font-semibold leading-6 text-white text-sm"
+          >
             Log in <span aria-hidden="true">&rarr;</span>
           </a>
         </div>

@@ -15,3 +15,22 @@
 .bg-secondrary {
   @apply bg-[#11647a];
 }
+
+.hero_carousel_image {
+  width: 100%;
+  background-size: cover;
+  background-position: 50%;
+  height: 40vw;
+}
+
+.carousel_wrapper {
+  @apply w-full overflow-hidden;
+}
+
+.carousel_wrapper .slick-dots {
+  @apply bottom-[25px];
+}
+
+.carousel_wrapper .slick-dots li button:before {
+  @apply text-sm text-[#27d8a3];
+}
