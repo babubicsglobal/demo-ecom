@@ -20,7 +20,7 @@ function UtilityMenu() {
 
   useEffect(() => {
     getUtilityMenu();
-  }, []);
+  }, [getUtilityMenu]);
 
   return (
     <nav className="bg-secondrary border-gray-200 dark:bg-gray-900">
