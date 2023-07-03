@@ -2,6 +2,7 @@
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import { client } from "@/lib/contentful/client";
+import ProductsCategoryPage from "./products/[category]";
 import { useEffect, useState } from "react";
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
   return (
     <div>
       <HeroCarousel contentData={heroCarouselList}></HeroCarousel>
+      <ProductsCategoryPage></ProductsCategoryPage>
     </div>
   );
 }
