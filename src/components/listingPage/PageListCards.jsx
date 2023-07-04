@@ -12,7 +12,7 @@ const PageListCards = ({ catData }) => {
             key={index}
           >
             <article className="overflow-hidden rounded-lg shadow-lg">
-              <Link href="#">
+              <Link href={`/products/${item.fields.slug}`}>
                 <img
                   alt="Placeholder"
                   className="block h-auto w-full"
