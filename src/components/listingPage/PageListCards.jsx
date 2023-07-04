@@ -12,7 +12,7 @@ const PageListCards = ({ catData }) => {
             key={index}
           >
             <article className="overflow-hidden rounded-lg shadow-lg">
-              <Link href={`/products/${item.slug}`}>
+              <Link href="#">
                 <img
                   alt="Placeholder"
                   className="block h-auto w-full"
@@ -36,6 +36,7 @@ const PageListCards = ({ catData }) => {
                   See all {item.fields.productCategory} products
                 </a>
               </footer>
+              <div>{item.fields.commercetoolsProduct}</div>
             </article>
           </div>
         ))}
