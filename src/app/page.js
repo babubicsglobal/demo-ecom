@@ -2,7 +2,7 @@
 import Image from "next/image";
 import HeroCarousel from "@/components/HeroCarousel";
 import { client } from "@/lib/contentful/client";
-import ProductsCategoryPage from "./products/[category]";
+import ProductsCategoryPage from "./products/[category]/page";
 import { useEffect, useState } from "react";
 
 export default function Home() {
