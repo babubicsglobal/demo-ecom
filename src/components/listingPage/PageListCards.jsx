@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 
 const PageListCards = ({ catData, categoryLists, allProducts }) => {
   const [updatedProducts, setUpdatedProducts] = useState([]);
-  const [items, setItems] = useState([]);
+
   const pathname = usePathname();
   console.log("pathname", pathname);
   const products = useMemo(() => catData || [], [catData]);
@@ -85,6 +85,8 @@ const PageListCards = ({ catData, categoryLists, allProducts }) => {
   );
   console.log("isActive", isActive);
   console.log("productByValue", productByValue);
+
+  const productUrl = `${updatedProducts[0]?.commerceProduct?.masterData?.current?.name?.en}`;
   // console.log("catitems", items);
 
   // console.log("fullProducts", fullProducts);
@@ -103,7 +105,7 @@ const PageListCards = ({ catData, categoryLists, allProducts }) => {
               <Link
                 href={
                   isActive
-                    ? `/product/${item?.commerceProduct?.key}}`
+                    ? `/product/${productUrl}`
                     : `/products/${item?.commerceItem?.slug?.en}`
                 }
               >
