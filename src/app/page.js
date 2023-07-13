@@ -4,6 +4,7 @@ import HeroCarousel from "@/components/HeroCarousel";
 import { client } from "@/lib/contentful/client";
 import ProductsCategoryPage from "./products/[category]/page";
 import { useEffect, useState } from "react";
+import { getApiRoot, projectKey } from "@/lib/commerceTools";
 
 export default function Home() {
   const [heroCarouselList, setHeroCarouselList] = useState([]);
@@ -14,8 +15,40 @@ export default function Home() {
     setHeroCarouselList(responseData);
     console.log("heroBanner", responseData);
   };
+
+  const getCartCreateKey = async () => {
+    try {
+      const project = await getApiRoot()
+        .withProjectKey({ projectKey })
+        .carts() //.productTypes()
+        // .withId({ ID: shoppingId })
+        //.categories()
+        //.customers()
+        .post({
+          body: {
+            // version,
+            currency: "INR",
+          },
+        })
+        .execute();
+      // .get()
+      // .execute();
+
+      localStorage.setItem("cartId", project.body.id);
+      console.log("project.body", project.body.id);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const CartVarID = localStorage.getItem("cartId");
+
   useEffect(() => {
     getCarousel();
+    if (!CartVarID) {
+      getCartCreateKey();
+    } else {
+      localStorage.removeItem(CartVarID);
+    }
   }, []);
   return (
     <div>

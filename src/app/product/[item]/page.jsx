@@ -2,13 +2,53 @@
 import React, { useMemo } from "react";
 import { getApiRoot, projectKey } from "@/lib/commerceTools";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 function ProductDetailpage({ params }) {
   console.log("params", params);
+  const router = useRouter();
 
   const [productItem, setProductItem] = useState([]);
   const [productList, setproductList] = useState([]);
+  const [cartList, setCartList] = useState([]);
+  const [cartLineItem, setCartLineItem] = useState([]);
 
+  const cartVariantId = localStorage.getItem("cartId");
+  console.log("cartId item", localStorage.getItem("cartId"));
+
+  const getMasterId = useMemo(() => productItem.results, [productItem]);
+  console.log("getMasterId", getMasterId);
+
+  const shoppingId = productList?.length && productList[0]?.id;
+  const cartName =
+    productList?.length && productList[0]?.masterData?.current?.name?.en;
+
+  const variantId = productList?.length && productList[0]?.lastVariantId;
+
+  const quantity =
+    productList?.length && productList[0]?.masterData?.current?.slug?.en;
+
+  const versionItem = cartLineItem?.results;
+
+  console.log("cartLineItem", cartLineItem);
+
+  const version = versionItem?.length && versionItem[0]?.version;
+
+  const currencyCode =
+    productList?.length &&
+    productList[0]?.masterData?.staged?.variants[0]?.prices[0]?.value
+      ?.currencyCode;
+
+  console.log(
+    "shoppingId",
+    shoppingId,
+    cartName,
+    variantId,
+    quantity,
+    version,
+    currencyCode
+  );
   const getProductKey = async () => {
     try {
       const project = await getApiRoot()
@@ -28,9 +68,61 @@ function ProductDetailpage({ params }) {
     }
   };
 
-  const getMasterId = useMemo(() => productItem.results, [productItem]);
+  const getCartKey = async () => {
+    try {
+      const project = await getApiRoot()
+        .withProjectKey({ projectKey })
+        .carts() //.productTypes()
+        .withId({ ID: cartVariantId })
+        //.categories()
+        //.customers()
+        .post({
+          body: {
+            version: version,
+            actions: [
+              {
+                action: "addLineItem",
+                productId: shoppingId,
+                variantId: variantId,
+                quantity: 1,
+              },
+            ],
+          },
+        })
+        .execute();
+      // .get()
+      // .execute();
 
-  console.log("getMasterId", getMasterId);
+      setCartList(project.body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const getCartItemKey = async () => {
+    try {
+      const project = await getApiRoot()
+        .withProjectKey({ projectKey })
+        .carts()
+        //.productTypes()
+        //.categories()
+        //.customers()
+        .get()
+        .execute();
+      // .get()
+      // .execute();
+
+      setCartLineItem(project.body);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleClick = (event) => {
+    event.preventDefault();
+    getCartKey();
+    router.push("/cart");
+  };
 
   const getProductBySku = async () => {
     const productSlug = params?.item;
@@ -43,17 +135,21 @@ function ProductDetailpage({ params }) {
 
     return filteredProduct;
   };
+
   useEffect(() => {
     getProductBySku();
   }, [getMasterId]);
 
   useEffect(() => {
     getProductKey();
+    getCartKey();
+    getCartItemKey();
   }, []);
 
-  console.log("product item", productItem);
-  console.log("productList", productList?.length && productList[0]);
-  //   console.log("productList", productList[0]);
+  // console.log("product item", productItem);
+  // console.log("productList", productList?.length && productList[0]);
+  // console.log("cartList", cartList);
+
   //   const findProductID = productList[0];
   //   console.log("findProductID", findProductID);
 
@@ -174,7 +270,7 @@ function ProductDetailpage({ params }) {
             <div className="flex">
               <span className="title-font font-medium text-2xl text-gray-900">
                 <div className="price-counter">
-                  <span>
+                  <div>
                     <span className="a-price-symbol">₹&nbsp;</span>
                     <span className="text-5xl">
                       {GetProductDetail?.masterData?.staged?.variants[0]
@@ -190,11 +286,14 @@ function ProductDetailpage({ params }) {
                           ?.prices[0]?.value?.centAmount / 100}
                       </span>
                     </span>
-                  </span>
+                  </div>
                 </div>
               </span>
               <button className="flex ml-auto text-white bg-secondrary border-0 py-2 px-6 rounded">
-                Add to Cart
+                <Link href="/cart" onClick={handleClick}>
+                  {" "}
+                  Add to Cart
+                </Link>
               </button>
             </div>
           </div>
