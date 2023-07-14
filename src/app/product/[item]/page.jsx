@@ -14,8 +14,8 @@ function ProductDetailpage({ params }) {
   const [cartList, setCartList] = useState([]);
   const [cartLineItem, setCartLineItem] = useState([]);
 
-  const cartVariantId = localStorage.getItem("cartId");
-  console.log("cartId item", localStorage.getItem("cartId"));
+  // const cartVariantId = localStorage.getItem("cartId");
+  // console.log("cartId item", localStorage.getItem("cartId"));
 
   const getMasterId = useMemo(() => productItem.results, [productItem]);
   console.log("getMasterId", getMasterId);
@@ -35,6 +35,8 @@ function ProductDetailpage({ params }) {
 
   const version = versionItem?.length && versionItem[0]?.version;
 
+  const cartVariantId = versionItem?.length && versionItem[0]?.id;
+
   const currencyCode =
     productList?.length &&
     productList[0]?.masterData?.staged?.variants[0]?.prices[0]?.value
@@ -47,7 +49,8 @@ function ProductDetailpage({ params }) {
     variantId,
     quantity,
     version,
-    currencyCode
+    currencyCode,
+    cartVariantId
   );
   const getProductKey = async () => {
     try {
