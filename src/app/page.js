@@ -65,19 +65,31 @@ export default function Home() {
   // const CartVarID = localStorage.getItem("cartId");
   const cartIndexList = useMemo(() => cartIndexKey.results, [cartIndexKey]);
 
-  const cartIndexNumber = cartIndexList?.length;
+  // const cartIndexNumber = cartIndexList?.length;
   console.log("cartIndexKey", cartIndexKey);
-  console.log("cartIndexList", cartIndexNumber);
 
   useEffect(() => {
     getCarousel();
     getCartIndexKey();
+    const cartIndexNumber = cartIndexList?.length;
+    console.log("cartIndexNumber", cartIndexNumber);
     if (cartIndexNumber === 0) {
       getCartCreateKey();
     } else {
       console.log("error");
     }
   }, []);
+
+  useEffect(() => {
+    const cartIndexNumber = cartIndexList?.length;
+    console.log("cartIndexNumber", cartIndexNumber);
+    if (cartIndexNumber === 0) {
+      getCartCreateKey();
+    } else {
+      console.log("error");
+    }
+  }, [cartIndexList]);
+
   // const cartIndexList = cartIndexKey.results;
 
   return (
