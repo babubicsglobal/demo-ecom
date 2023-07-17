@@ -51,7 +51,7 @@ function CartPage() {
       // .get()
       // .execute();
 
-      setCartDeleteItem(project.body);
+      // setCartDeleteItem(project.body);
     } catch (e) {
       console.log(e);
     }

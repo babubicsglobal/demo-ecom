@@ -97,6 +97,7 @@ function ProductDetailpage({ params }) {
       // .execute();
 
       setCartList(project.body);
+      router.push("/cart");
     } catch (e) {
       console.log(e);
     }
@@ -124,7 +125,7 @@ function ProductDetailpage({ params }) {
   const handleClick = (event) => {
     event.preventDefault();
     getCartKey();
-    router.push("/cart");
+    // router.push("/cart");
   };
 
   const getProductBySku = async () => {
