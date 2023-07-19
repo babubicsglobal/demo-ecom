@@ -4,7 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
-const PageListCards = ({ catData, categoryLists, allProducts }) => {
+const PageListCards = ({
+  catData,
+  categoryLists,
+  allProducts,
+  ourProductList,
+}) => {
   const [updatedProducts, setUpdatedProducts] = useState([]);
 
   const pathname = usePathname();

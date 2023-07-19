@@ -13,6 +13,7 @@ const ProductsCategoryPage = ({ params }) => {
   const [categoryDetails, setCategoryDetails] = useState({});
 
   const [productDetails, setProductDetails] = useState({});
+  const [ourProductValue, setourProductValue] = useState({});
 
   const getCategoryId = async () => {
     try {
@@ -65,6 +66,7 @@ const ProductsCategoryPage = ({ params }) => {
 
     // console.log("categoryData", categoryData);
     console.log("ourproducts", responseProduct.items);
+    setourProductValue(responseProduct.items);
   };
 
   useEffect(() => {
@@ -73,12 +75,13 @@ const ProductsCategoryPage = ({ params }) => {
     getProductId();
   }, []);
 
-  // console.log("projectDetails", categoryDetails.results);
+  console.log("ourProductValue", ourProductValue);
   // console.log("productDetails", productDetails.results);
   // console.log("projectDetails", JSON.stringify(projectDetails, undefined, 2));
   return (
     <div>
       <PageListCards
+        ourProductList={ourProductValue}
         catData={categoryList}
         categoryLists={categoryDetails}
         allProducts={productDetails}

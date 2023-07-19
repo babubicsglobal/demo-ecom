@@ -52,6 +52,7 @@ function CartPage() {
       // .execute();
 
       // setCartDeleteItem(project.body);
+      setcartSingleValue([]);
     } catch (e) {
       console.log(e);
     }
