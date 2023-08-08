@@ -4,7 +4,6 @@ import PageListCards from "@/components/listingPage/PageListCards";
 import { client } from "@/lib/contentful/client";
 import { useEffect, useState } from "react";
 import { getApiRoot, projectKey } from "@/lib/commerceTools";
-import axios from "axios";
 
 const ProductsCategoryPage = ({ params }) => {
   console.log("params", params);
@@ -15,37 +14,6 @@ const ProductsCategoryPage = ({ params }) => {
 
   const [productDetails, setProductDetails] = useState({});
   const [ourProductValue, setourProductValue] = useState({});
-
-  const [commerceData, setCommerceData] = useState([]);
-
-  const [cfulData, setCfulData] = useState([]);
-  const [cfulFilterData, setCfulFilterData] = useState([]);
-
-  const getBigcomProducts = async () => {
-    const result = await axios.get("api/bigcomProducts");
-    // console.log("bigcommerce products", result);
-    setCommerceData(result.data.data);
-  };
-  const getCommerceProduct = async () => {
-    const response = await client.getEntries({ content_type: "product" });
-    // console.log("contentful products", response.items);
-    setCfulData(response.items);
-  };
-
-  const getUpdatedCategory = () => {
-    const newProducts = cfulData?.map((product) => {
-      const filteredProduct = commerceData?.find(
-        (item) => product?.fields?.bigcommerceProduct === item?.sku
-      );
-      console.log("map product", filteredProduct);
-      product.commerceItem = filteredProduct;
-      return product;
-    });
-    const updatedBigcomProducts = newProducts.filter(
-      (item) => item.commerceItem
-    );
-    setCfulFilterData(updatedBigcomProducts);
-  };
 
   const getCategoryId = async () => {
     try {
@@ -102,23 +70,12 @@ const ProductsCategoryPage = ({ params }) => {
   };
 
   useEffect(() => {
-    getUpdatedCategory();
-  }, [cfulData, commerceData]);
-
-  useEffect(() => {
     getCategory();
     getCategoryId();
     getProductId();
-
-    getBigcomProducts();
-    getCommerceProduct();
   }, []);
 
   console.log("ourProductValue", ourProductValue);
-
-  console.log("cfulData", cfulData);
-  console.log("commerceData", commerceData);
-  console.log("cfulFilterData", cfulFilterData);
   // console.log("productDetails", productDetails.results);
   // console.log("projectDetails", JSON.stringify(projectDetails, undefined, 2));
   return (
@@ -128,7 +85,6 @@ const ProductsCategoryPage = ({ params }) => {
         catData={categoryList}
         categoryLists={categoryDetails}
         allProducts={productDetails}
-        bigCommerceData={cfulFilterData}
       ></PageListCards>
     </div>
   );
