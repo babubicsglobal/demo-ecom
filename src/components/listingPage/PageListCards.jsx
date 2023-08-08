@@ -9,16 +9,22 @@ const PageListCards = ({
   categoryLists,
   allProducts,
   ourProductList,
+  bigCommerceData,
 }) => {
   const [updatedProducts, setUpdatedProducts] = useState([]);
 
   const pathname = usePathname();
   console.log("pathname", pathname);
+
   const products = useMemo(() => catData || [], [catData]);
+
+  const bigCommerceProducts = useMemo(() => bigCommerceData, [bigCommerceData]);
+
   const productsList = useMemo(() => categoryLists.results, [categoryLists]);
 
   const productByValue = useMemo(() => allProducts.results, [allProducts]);
 
+  console.log("bigCommerceProducts", bigCommerceProducts);
   // const getProductKey = async () => {
   //   for (let i = 0; i < productsList?.length; i++) {
   //     let commerceToolsKey =
@@ -100,6 +106,11 @@ const PageListCards = ({
 
   return (
     <div className="container my-12 mx-auto px-4 md:px-12">
+      <div className="block text-4xl font-extrabold dark:text-white">
+        <h1>
+          {isActive ? "Commerce Tools Products" : "Commerce Tools Categories"}
+        </h1>
+      </div>
       <div className="flex flex-wrap -mx-1 lg:-mx-4">
         {updatedProducts.map((item, index) => (
           <div
@@ -188,6 +199,78 @@ const PageListCards = ({
           </div>
         ))}
       </div>
+      {bigCommerceProducts?.length != 0 && (
+        <div className="bicommerce-box">
+          <div className="block text-4xl font-extrabold dark:text-white">
+            <h1 className="mt-20">
+              {isActive ? "Bigcommerce Products" : "Big Commerce Products"}
+            </h1>
+          </div>
+          <div className="flex flex-wrap -mx-1 lg:-mx-4">
+            {bigCommerceProducts.map((item, index) => (
+              <div
+                className="my-1 px-1 w-full md:w-1/3 lg:my-4 lg:px-4 lg:w-1/4"
+                key={index}
+              >
+                <article className="overflow-hidden rounded-lg shadow-lg card-list">
+                  <Link href="">
+                    <img
+                      alt="Placeholder"
+                      className="block h-72 w-full object-contain"
+                      //src={item.fields.productImage[0].fields.file.url}
+                      src={item?.commerceItem?.images[0]?.url_standard}
+                    />
+                  </Link>
+                  <div className={isActive ? "bg-primary" : "card-bodylist"}>
+                    <header className="flex justify-between leading-tight p-2 md:p-4 flex-col">
+                      <h1 className="text-lg subheading">
+                        <a
+                          className="no-underline hover:underline text-white"
+                          href="#"
+                        >
+                          {/* {item?.commerceProduct?.masterData?.staged?.name?.en} */}
+                          {item?.commerceItem?.name}
+                        </a>
+                      </h1>
+                      <div className="price-counter">
+                        <span>
+                          <span className="a-price-symbol">₹&nbsp;</span>
+
+                          {item?.commerceItem?.price}
+                        </span>
+                        <span>
+                          {" "}
+                          {isActive ? (
+                            <span className="a-price-symbol">M.R.P&nbsp;</span>
+                          ) : (
+                            ""
+                          )}
+                          {isActive ? (
+                            <span className="line-through">
+                              {item?.commerceItem?.price}
+                            </span>
+                          ) : (
+                            " "
+                          )}
+                        </span>
+                      </div>
+                    </header>
+
+                    <footer className="flex items-center justify-between leading-none p-2 md:p-4">
+                      <a
+                        className="no-underline hover:underline text-white"
+                        href="#"
+                      >
+                        See all {item?.commerceItem?.name} products
+                      </a>
+                    </footer>
+                  </div>
+                </article>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
